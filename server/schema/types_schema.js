@@ -1,80 +1,68 @@
-const graphql = require('graphql');
+const  graphql = require('graphql');
+const { buildResolveInfo } = require('graphql/execution/execute');
 
- const {
-     GraphQLObjectType,
-     GraphQLID,
-     GraphQLString,
-     GraphQLInt,
-     GraphQLBoolean,
-     GraphQLFloat,
-     GraphQLSchema,
-     GraphQLNonNull
-
- } = graphql
+const {
+    GraphQLObjectType,
+    GraphQLSchema,
+    GraphQLID,
+    GraphQLString,
+    GraphQLInt,
+    GraphQLBoolean,
+    GraphQLFloat,
+    GraphQLNonNull
+} = graphql
 
 //Scalar Type
 /*
-  String = GraphQLString
-  int
-  Float
-  Boolean
-  ID
-
+    String
+    int
+    Float
+    Boolean
+    ID
 */
+var persons = [
+    {id: '1', name: "Pradeep Kaja", age: 35, isMarried: true, gpa: 3.67},
+];
 
 const Person = new GraphQLObjectType({
-      name: 'Person',
-      description: 'Represents a Person Type',
-      fields: () => ({
-           id: {type: GraphQLID},
-           name: {type: new GraphQLNonNull(GraphQLString) },
-           age: {type: GraphQLInt},
-           isMarried: {type: GraphQLBoolean},
-           gpa: {type: GraphQLFloat},
+    name: 'Person',
+    description: 'Represents a person type',
+    fields: () => ({
+        id: {type: GraphQLID},
+        name: {type: new GraphQLNonNull(GraphQLString)},
+        age: {type: GraphQLInt},
+        isMarried: {type: GraphQLBoolean},
+        gpa: {type: GraphQLFloat},
 
-           justAType: {
-               type: Person,
-               resolve(parent, args) {
-                   return parent; 
-               }
-           }
-      })
-});
+        justAType: {
+            type: Person,
+            resolve(parent, args) {
+                return parent;
+            }
+        }
+    })
+})
 
-//RootQuery
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
-    description: 'Description',
+    description: 'Types of Graph QL',
     fields: {
         person: {
             type: Person,
-            //args: {id: {type: GraphQLString}},
             resolve(parent, args) {
-                  //we resolve with data
-                  //get and return data from a datasource
-
-                  let personObj = {
-                      //id: {type: GraphQLID},
-                      name: 'Antonio',
-                      age: 34,
-                      isMarried: true,
-                      gpa: 4.0,
-
-                  };
-
-                   return personObj;
-                  }
-       }
-         
-       
+                let person = {
+                    //id: {type: GraphQLID},
+                    name: 'Pradeep Kaja',
+                    age: 35,
+                    isMarried: true,
+                    gpa: 3.67,
+                };
+                return person;
+            }
+        }
     }
 });
 
 module.exports = new GraphQLSchema({
-    query: RootQuery,
-});
-
-
-
-
-
+    query: RootQuery
+})
